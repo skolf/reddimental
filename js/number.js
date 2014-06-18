@@ -12,17 +12,19 @@ Number.prototype.toAbbr = function(precision) {
     var mag = Math.floor(Math.log(this) / Math.LN10 / 3);
     return (this / Math.pow(1000, mag)).toPrecision(precision || 3) + " KMBTP"[mag];
   }
-}
+};
 
 // translate a UTC timestamp to a relative time
+// ex: (new Date().getTime()/1000 - 10).timeAgo()
+//     > 10s ago
 Number.prototype.timeAgo = function(options) {
   var now  = new Date(),
-  		diff = now.getTime()/1000 - this,
-  		str  = '';
-  
-	options = options || {};
-	diff    = diff < 0 ? 0 : diff;
-  
+      diff = now.getTime()/1000 - this,
+      str  = '';
+
+  options = options || {};
+  diff    = diff < 0 ? 0 : diff;
+
   if(diff < 60)
     str = Math.round(diff) + 's';
   else if(diff < 3600) {
@@ -35,13 +37,12 @@ Number.prototype.timeAgo = function(options) {
   }
   else {
     var days = Math.round(diff/86400),
-    		yrs  = Math.floor(days/365);
-    		
+        yrs  = Math.floor(days/365);
+
     days = days - 365*yrs;
     str  = (yrs && yrs+'y ' || '') + days + 'd';
   }
-
-  options.suffix != false && (str += ' ago');
+  if(options.suffix !== false) str += ' ago';
 
   return str;
-}
+};

@@ -1,11 +1,3 @@
-/*
-to do:
-	titlebar
-  loading indicators
-  tooltips
-  search
-*/
-
 'use strict';
 
 // configure the base path and handling of jquery
@@ -29,11 +21,11 @@ require(['d3', 'jquery', 'harvester', 'sentiment', 'pie', 'scatter', 'number'], 
 
   // called by the harvester when data is ready
   var update = function(data) {
-  	// score each post for sentiment and count hits for each type
+    // score each post for sentiment and count hits for each type
     var pos = 0, neg = 0, neu = 0,
         max = 0, maxType = 0,
         posts = $.map(data, function(t) {
-					// structure each result
+          // structure each result
           var d = {
             author:    t.data.author,
             link:      t.data.permalink,
@@ -79,19 +71,19 @@ require(['d3', 'jquery', 'harvester', 'sentiment', 'pie', 'scatter', 'number'], 
 
     // update the scatter plot
     $('[data-widget="scatter"]').data('scatter').update({values: posts});
-    
+
     // render the top posts lists
     $('[data-widget="list"]').each(function() {
       var frag = document.createDocumentFragment(),
-      		type = $(this).attr('data-bind');
+          type = $(this).attr('data-bind');
 
       lists[type].forEach(function(d) {
-				$(frag).append(
-				  '<a href="http://reddit.com/' + d.link +
-					'" class="list-group-item list-group-item-' + listStyles[type] + '">' + 
-					'<h4 class="list-group-item-heading">' + d.author +
-				 	'<span class="timestamp pull-right">' + d.created.timeAgo() + 
-					'</span></h4><p class="list-group-item-text">' + d.title + '</p></a>');
+        $(frag).append(
+          '<a href="http://reddit.com/' + d.link +
+          '" class="list-group-item list-group-item-' + listStyles[type] + '">' +
+          '<h4 class="list-group-item-heading">' + d.author +
+          '<span class="timestamp pull-right">' + d.created.timeAgo() +
+          '</span></h4><p class="list-group-item-text">' + d.title + '</p></a>');
       });
 
       $(this).find('ul').html(frag);
@@ -112,7 +104,7 @@ require(['d3', 'jquery', 'harvester', 'sentiment', 'pie', 'scatter', 'number'], 
     values: [],
     aspect: .7
   });
-  
+
   // run the harvester and pass results to the sentiment engine
   harvester.run({
     limit: 100,

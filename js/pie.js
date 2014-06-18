@@ -45,7 +45,7 @@
 
   // setup d3 components
   pie.init = function() {
-  	this.setDimensions();
+    this.setDimensions();
 
     this.color = d3.scale
                    .ordinal()
@@ -54,28 +54,28 @@
 
     this.svg = d3.select(this.el)
                  .append("svg")
-								 .attr("width",  this.width)
-								 .attr("height", this.height);
+                 .attr("width",  this.width)
+                 .attr("height", this.height);
 
-		this.container = this.svg.append("g")
+    this.container = this.svg.append("g")
                              .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
 
-		this.chart = d3.layout
+    this.chart = d3.layout
                    .pie()
                    .value(function(d) { return d; })
                    .sort(null);
 
     this.arc = this.makeArc();
 
-		this.renderArcs();
+    this.renderArcs();
 
-		this.label = d3.select(this.el)
-									 .append("div")
-									 .attr("class", "wdg-label-center");
-		this.renderLabel();
+    this.label = d3.select(this.el)
+                   .append("div")
+                   .attr("class", "wdg-label-center");
+    this.renderLabel();
 
-	  this.resizeTimer = null;
-	  $(window).on('resize', this.resizeQueuer());
+    this.resizeTimer = null;
+    $(window).on('resize', this.resizeQueuer());
   };
 
   // set the widget dimensions based on the element
@@ -87,31 +87,31 @@
 
   // create a new arc layout
   pie.makeArc = function() {
-  	return d3.svg.arc()
-								 .outerRadius(this.radius - this.o.padding)
-								 .innerRadius(this.radius * this.o.innerRadius);
+    return d3.svg.arc()
+                 .outerRadius(this.radius - this.o.padding)
+                 .innerRadius(this.radius * this.o.innerRadius);
   };
 
   // returns a function that debounces resizing with a delay
   pie.resizeQueuer = function() {
-  	var that = this;
-  	return function() {
-  	  that.resizeTimer = that.resizeTimer || setTimeout(that.resizer(), 20);
-  	}
+    var that = this;
+    return function() {
+      that.resizeTimer = that.resizeTimer || setTimeout(that.resizer(), 20);
+    }
   };
 
   // returns a function that recalculates dimensions and redraws
   pie.resizer = function() {
-  	var that = this;
-  	return function() {
-			that.resizeTimer = null;
-			that.setDimensions();
-			that.svg.attr("width", that.width);
-			that.svg.attr("height", that.height);
-			that.container.attr("transform", "translate(" + that.width / 2 + "," + that.height / 2 + ")");
-			that.update({arc: that.makeArc()});
-			that.renderLabel();
-		}
+    var that = this;
+    return function() {
+      that.resizeTimer = null;
+      that.setDimensions();
+      that.svg.attr("width", that.width);
+      that.svg.attr("height", that.height);
+      that.container.attr("transform", "translate(" + that.width / 2 + "," + that.height / 2 + ")");
+      that.update({arc: that.makeArc()});
+      that.renderLabel();
+    }
   };
 
   // update data
@@ -122,32 +122,32 @@
       this.renderArcs();
     }
     if(data.label) {
-    	this.o.label = data.label;
-    	this.renderLabel();
+      this.o.label = data.label;
+      this.renderLabel();
     }
   };
 
   // draw the chart's arcs
   pie.renderArcs = function() {
-  	var color = this.color,
-  			arc   = this.arc,
-  	    arcs  = this.container.selectAll("path").data(this.chart(this.o.values || []));
+    var color = this.color,
+        arc   = this.arc,
+        arcs  = this.container.selectAll("path").data(this.chart(this.o.values || []));
 
-  	arcs.enter()
-				.append("path")
-				.attr("fill", function(d, i) { return color(i); })
-				.attr("d", arc)
-				.each(function(d) { this._current = d; });
+    arcs.enter()
+        .append("path")
+        .attr("fill", function(d, i) { return color(i); })
+        .attr("d", arc)
+        .each(function(d) { this._current = d; });
 
-		arcs.transition()
-				.duration(750)
-				.attrTween("d", function(d) {
-					var interpolate = d3.interpolate(this._current, d);
-					this._current = interpolate(0);
-					return function(t) {
-						return arc(interpolate(t));
-					}
-				});
+    arcs.transition()
+        .duration(750)
+        .attrTween("d", function(d) {
+          var interpolate = d3.interpolate(this._current, d);
+          this._current = interpolate(0);
+          return function(t) {
+            return arc(interpolate(t));
+          }
+        });
   };
 
   // render the center label, output multiple lines if an array is provided
