@@ -1,6 +1,19 @@
 // sentiment.js 1.0.0
 //
-// a simple sentiment scoring engine
+// a simple sentiment scoring engine that tokenizes a string,
+// builds ngrams from the tokens, and returns the average
+// score of all ngrams found in the database.
+//
+// ex: sentiment.score('wow, this is yummy')
+//     > 3.5
+//
+// Finn Årup's database is used for calculating scores:
+//   http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010
+//
+// This database of words is copyright protected and distributed under
+// "Open Database License (ODbL) v1.0"
+// http://www.opendatacommons.org/licenses/odbl/1.0/ or a similar
+// copyleft license.
 (function(global, factory) {
 
   // define using AMD if possible
