@@ -7,6 +7,10 @@
 // ex: sentiment.score('wow, this is yummy')
 //     > 3.5
 //
+// The scoring algorithm is a Javascript port of the
+// text2sentiment method in Pete Warden's Data Science Toolkit:
+//   http://www.datasciencetoolkit.org/
+//
 // Finn Årup's database is used for calculating scores:
 //   http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010
 //
